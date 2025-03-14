@@ -12,6 +12,8 @@ namespace PomodoroVic
 {
     public partial class Pomodoro : Form
     {
+        private double valor;
+
         public Pomodoro()
         {
             InitializeComponent();
@@ -61,5 +63,38 @@ namespace PomodoroVic
             label1.Text = lblTiempo.Text;//Temporal
             timerControlTiempo.Stop();
         }
+
+        private void chkOpacidad_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (chkOpacidad.Checked)
+            {
+                trbOpacidad.Enabled = true;
+            }
+            else
+            {
+                trbOpacidad.Enabled = false;
+            }
+        }
+
+        private void trbOpacidad_Scroll(object sender, System.EventArgs e)
+        {
+            valor = trbOpacidad.Value;
+            valor = 1 - (valor / 10);
+            this.Opacity = valor;
+            //MessageBox.Show(trbOpacidad.Value + "|" + this.Opacity.ToString());
+        }
+
+        private void chkAlwaysOnTop_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (chkAlwaysOnTop.Checked)
+            {
+                this.TopMost = true;
+            }
+            else
+            {
+                this.TopMost = false;
+            }
+        }
+
     }
 }
