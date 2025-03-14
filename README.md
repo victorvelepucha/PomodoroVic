@@ -1,5 +1,11 @@
 # PomodoroVic Desktop Application
 
+## Pomodoro application V1.7
+- Cambio en dialogo que presenta cuando termina 1 pomodoro (de fin de tiempo), para presentar 2 botones, continuar o cancelar. 
+- Dialogo se cierra luego de 10 segundos. 
+- Si se presiona Si, se continua con otro pomodoro en modo inverso.
+
+---
 ## Pomodoro application V1.6
 - Se rediseña para que por default se inicie en modo minimalista. 
 - Algunas opciones se mueven/desaparecen para mostrarse solo con clic derecho. 

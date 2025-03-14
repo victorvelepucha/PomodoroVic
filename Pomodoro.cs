@@ -12,22 +12,27 @@ namespace PomodoroVic
 {
     public partial class Pomodoro : Form
     {
-        public const int WM_NCLBUTTONDOWN = 0xA1;
-        public const int HT_CAPTION = 0x2;
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private IntPtr HT_CAPTION = (IntPtr)0x2;
+        private const int POMODORO_TRABAJO = 0x019;
+        private const int POMODORO_DESCANSO = 0x005;
         private bool banderaBoton25;
+        private int cuentaAntesCierre;
+        private System.Timers.Timer myTimer;
+        private string tituloMensaje = "Fin Pomodoro!!!";
         private System.DateTime dtmTiempoAuxiliar;
         private System.DateTime dtmTiempoActualizado;
+        //private const UInt32 WM_CLOSE = 0x0082;//0x0010;
+        private const UInt32 WM_DESTROY = 0x0082;
+        private const string WM_MSGBOXE = "#32770";
 
-        private const UInt32 WM_CLOSE = 0x0010;
+        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        [System.Runtime.InteropServices.DllImportAttribute("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
-        static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
 
-        [System.Runtime.InteropServices.DllImportAttribute("user32.Dll")]
-        static extern int PostMessage(IntPtr hWnd, UInt32 msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
 
-        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
@@ -48,7 +53,7 @@ namespace PomodoroVic
         {
             dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 0);//24 min, 55 segundos, coloco para pruebas en desarrollo
             dtmTiempoActualizado = new DateTime(1901, 1, 1, 1, 0, 0);
-            dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(25);//(25);
+            dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(POMODORO_TRABAJO);//(POMODORO_TRABAJO);
             lblTiempo.Text = dtmTiempoActualizado.ToString("mm:ss");
             banderaBoton25 = true;
 
@@ -57,9 +62,9 @@ namespace PomodoroVic
 
         private void btn5Minutos_Click(object sender, System.EventArgs e)
         {
-            dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 0);//4, 55 segundos, coloco para pruebas en desarrollo
+            dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 0);//4,55 segundos, coloco para pruebas en desarrollo
             dtmTiempoActualizado = new DateTime(1901, 1, 1, 1, 0, 0);
-            dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(5);//(5);
+            dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(POMODORO_DESCANSO);//(POMODORO_DESCANSO);
             lblTiempo.Text = dtmTiempoActualizado.ToString("mm:ss");
             banderaBoton25 = false;
 
@@ -72,6 +77,11 @@ namespace PomodoroVic
             lblTiempo.Text = dtmTiempoActualizado.ToString("mm:ss");
             if (dtmTiempoActualizado.Minute < 1)
             {
+                //ctmMenu.
+                ntfPomodoro.Visible = true;
+                ntfPomodoro.Text = "Menos de 1 minuto para finalizar";
+                ntfPomodoro.ContextMenu = this.ctmMenu;
+
                 if (lblTiempo.ForeColor == System.Drawing.Color.SteelBlue)
                 {
                     lblTiempo.ForeColor = System.Drawing.Color.Navy;
@@ -84,10 +94,48 @@ namespace PomodoroVic
             if (dtmTiempoActualizado <= dtmTiempoAuxiliar)
             {
                 timerControlTiempo.Stop();
-                string tiempo = (banderaBoton25 == true) ? "25" : "5";
-                MessageBox.Show("Fin del tiempo " + tiempo, "Fin Pomodoro!!!", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                int tiempo = (banderaBoton25 == true) ? POMODORO_TRABAJO : POMODORO_DESCANSO;
+                int tiempo2 = (tiempo == POMODORO_DESCANSO) ? POMODORO_TRABAJO : POMODORO_DESCANSO;
+                //MessageBox.Show("Fin del tiempo "+tiempo,tituloMensaje,MessageBoxButtons.OK,MessageBoxIcon.Information,MessageBoxDefaultButton.Button1,MessageBoxOptions.DefaultDesktopOnly);
+                ShowAutoClosingMessageBox("Fin del tiempo " + tiempo + Environment.NewLine + "Desea continuar con un nuevo ciclo " + tiempo2.ToString(), tituloMensaje, tiempo2);
             }
             Application.DoEvents();
+        }
+
+        private void ShowAutoClosingMessageBox(string message, string caption, int tiempo2)
+        {
+            myTimer = new System.Timers.Timer(1000);
+            myTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.myTimer_Elapsed);
+            myTimer.Enabled = true;
+            DialogResult resultado = MessageBox.Show(message, tituloMensaje, MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            if (resultado == DialogResult.Yes)
+            {
+                if (tiempo2 == POMODORO_TRABAJO)
+                {
+                    btn25Minutos_Click(null, null);
+                    btn25Minutos.Focus();
+                }
+                else
+                {
+                    btn5Minutos_Click(null, null);
+                    btn5Minutos.Focus();
+                }
+            }
+            myTimer.Enabled = false;
+            cuentaAntesCierre = 0;
+        }
+        private void myTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (cuentaAntesCierre >= 10)//10 segundos antes del cierre autom�tico
+            {
+                IntPtr hWnd = FindWindow(WM_MSGBOXE, tituloMensaje);
+                if (hWnd != IntPtr.Zero) SendMessage(hWnd, WM_DESTROY, IntPtr.Zero, IntPtr.Zero);
+                System.Console.WriteLine("Prueba " + DateTime.Now.ToString());
+                myTimer.Enabled = false;
+                myTimer.Dispose();
+                cuentaAntesCierre = 0;
+            }
+            cuentaAntesCierre += 1;
         }
 
         private void Form1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -105,7 +153,7 @@ namespace PomodoroVic
             if (e.Button == MouseButtons.Left)
             {
                 ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, IntPtr.Zero);
             }
             if (e.Button == MouseButtons.Left && e.Clicks == 2)
             {
@@ -136,7 +184,7 @@ namespace PomodoroVic
 
         private void menuItemSalir_Click(object sender, System.EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Seguro desea salir?", "Confirmaci�n", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Seguro desea salir?", "Confirmación", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 Application.Exit();
@@ -244,7 +292,6 @@ namespace PomodoroVic
 
         private void PlaceLowerRight()
         {
-            //Determine "rightmost" screen
             Screen rightmost = Screen.AllScreens[0];
             foreach (Screen screen in Screen.AllScreens)
             {
@@ -254,18 +301,6 @@ namespace PomodoroVic
 
             this.Left = rightmost.WorkingArea.Right - this.Width;
             this.Top = rightmost.WorkingArea.Bottom - this.Height;
-        }
-
-        public void ShowAutoClosingMessageBox(string message, string caption)
-        {
-            System.Timers.Timer timer = new System.Timers.Timer(5000);// { AutoReset = false };
-            /*timer.Elapsed += delegate
-							 {
-			IntPtr hWnd = FindWindowByCaption(IntPtr.Zero, caption);
-			if (hWnd.ToInt32() != 0) PostMessage(hWnd, WM_CLOSE, 0, 0);
-					};*/
-            timer.Enabled = true;
-            MessageBox.Show(message, caption);
         }
     }
 }

@@ -49,10 +49,10 @@ namespace PomodoroVic
             this.menuItemMinimizar = new System.Windows.Forms.MenuItem();
             this.menuItemDetener = new System.Windows.Forms.MenuItem();
             this.menuItemRestaurar = new System.Windows.Forms.MenuItem();
+            this.menuItemMostrarOcultarTitulo = new System.Windows.Forms.MenuItem();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuItemAcercaDe = new System.Windows.Forms.MenuItem();
             this.menuItemSalir = new System.Windows.Forms.MenuItem();
-            this.menuItemMostrarOcultarTitulo = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.timerControlTiempo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,6 +70,7 @@ namespace PomodoroVic
             // 
             // btn25Minutos
             // 
+            this.btn25Minutos.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btn25Minutos.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
             this.btn25Minutos.ForeColor = System.Drawing.SystemColors.Highlight;
             this.btn25Minutos.Location = new System.Drawing.Point(144, 0);
@@ -87,6 +88,7 @@ namespace PomodoroVic
             // 
             // btn5Minutos
             // 
+            this.btn5Minutos.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btn5Minutos.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
             this.btn5Minutos.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btn5Minutos.Location = new System.Drawing.Point(144, 32);
@@ -98,7 +100,7 @@ namespace PomodoroVic
             // 
             // ntfPomodoro
             // 
-            this.ntfPomodoro.Icon = ((System.Drawing.Icon)(resources.GetObject("ntfPomodoro.Icon")));
+            this.ntfPomodoro.Icon = this.Icon;
             this.ntfPomodoro.Text = "notifyIcon1";
             this.ntfPomodoro.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ntfPomodoro_MouseMove);
             this.ntfPomodoro.DoubleClick += new System.EventHandler(this.ntfPomodoro_DoubleClick);
@@ -176,6 +178,12 @@ namespace PomodoroVic
             this.menuItemRestaurar.Text = "&Restaurar Ventana";
             this.menuItemRestaurar.Click += new System.EventHandler(this.menuItem1_Click);
             // 
+            // menuItemMostrarOcultarTitulo
+            // 
+            this.menuItemMostrarOcultarTitulo.Index = 5;
+            this.menuItemMostrarOcultarTitulo.Text = "Mostrar/Ocultar t�tulo";
+            this.menuItemMostrarOcultarTitulo.Click += new System.EventHandler(this.menuItemMostrarOcultarTitulo_Click);
+            // 
             // menuItem1
             // 
             this.menuItem1.Index = 6;
@@ -192,12 +200,6 @@ namespace PomodoroVic
             this.menuItemSalir.Index = 8;
             this.menuItemSalir.Text = "&Salir";
             this.menuItemSalir.Click += new System.EventHandler(this.menuItemSalir_Click);
-            // 
-            // menuItemMostrarOcultarTitulo
-            // 
-            this.menuItemMostrarOcultarTitulo.Index = 5;
-            this.menuItemMostrarOcultarTitulo.Text = "Mostrar/Ocultar t�tulo";
-            this.menuItemMostrarOcultarTitulo.Click += new System.EventHandler(this.menuItemMostrarOcultarTitulo_Click);
             // 
             // Pomodoro
             //
