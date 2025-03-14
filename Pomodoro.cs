@@ -13,6 +13,8 @@ namespace PomodoroVic
     public partial class Pomodoro : Form
     {
         private double valor;
+        private System.DateTime dtmTiempoAuxiliar;
+        private System.DateTime dtmTiempoActualizado;
 
         public Pomodoro()
         {
@@ -54,7 +56,7 @@ namespace PomodoroVic
                 timerControlTiempo.Stop();
                 MessageBox.Show("Fin del tiempo", "Fin Pomodoro!!!", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
-            //Application.DoEvents();
+            Application.DoEvents();
         }
 
         private void btnDetener_Click(object sender, System.EventArgs e)
@@ -62,18 +64,6 @@ namespace PomodoroVic
             lblTiempo.Text = "00:00";
             label1.Text = lblTiempo.Text;//Temporal
             timerControlTiempo.Stop();
-        }
-
-        private void chkOpacidad_CheckedChanged(object sender, System.EventArgs e)
-        {
-            if (chkOpacidad.Checked)
-            {
-                trbOpacidad.Enabled = true;
-            }
-            else
-            {
-                trbOpacidad.Enabled = false;
-            }
         }
 
         private void trbOpacidad_Scroll(object sender, System.EventArgs e)
@@ -96,5 +86,34 @@ namespace PomodoroVic
             }
         }
 
+        private void Form1_Resize(object sender, System.EventArgs e)
+        {
+            if (FormWindowState.Minimized == this.WindowState)
+            {
+                ntfPomodoro.Visible = true;
+                //ntfPomodoro.ShowBalloonTip(500);
+                //this.ntfPomodoro.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info; //Shows the info icon so the user doesn't thing there is an error.
+                //this.ntfPomodoro.BalloonTipText = "[Balloon Text when Minimized]";
+                //this.ntfPomodoro.BalloonTipTitle = "[Balloon Title when Minimized]";
+                this.ntfPomodoro.Text = "Doble clic para maximizar...";
+                this.Hide();
+            }
+
+            else if (FormWindowState.Normal == this.WindowState)
+            {
+                ntfPomodoro.Visible = false;
+            }
+        }
+
+        private void ntfPomodoro_DoubleClick(object sender, System.EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void ntfPomodoro_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            this.ntfPomodoro.Text = lblTiempo.Text;
+        }
     }
 }

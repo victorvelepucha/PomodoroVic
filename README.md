@@ -1,5 +1,10 @@
 # PomodoroVic Desktop Application
 
+## Pomodoro application V1.3
+- Se coloca icono en título de ventana principal y envío a TraySystem.
+
+---
+
 ## Pomodoro application V1.2
 - Se incorpora opción AlwaysOnTop y Opacidad.
 
