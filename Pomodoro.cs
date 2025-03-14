@@ -12,9 +12,15 @@ namespace PomodoroVic
 {
     public partial class Pomodoro : Form
     {
-        private double valor;
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
         private System.DateTime dtmTiempoAuxiliar;
         private System.DateTime dtmTiempoActualizado;
+        private double valor;
+        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
 
         public Pomodoro()
         {
@@ -23,7 +29,6 @@ namespace PomodoroVic
         private void Form1_Load(object sender, System.EventArgs e)
         {
             lblTiempo.Text = "00:00";
-            label1.Text = lblTiempo.Text;//Temporal
         }
 
         private void btn25Minutos_Click(object sender, System.EventArgs e)
@@ -50,7 +55,6 @@ namespace PomodoroVic
         {
             dtmTiempoActualizado = dtmTiempoActualizado.Subtract(new TimeSpan(0, 0, 0, 1));
             lblTiempo.Text = dtmTiempoActualizado.ToString("mm:ss");
-            label1.Text = dtmTiempoAuxiliar.ToString("mm:ss");
             if (dtmTiempoActualizado <= dtmTiempoAuxiliar)
             {
                 timerControlTiempo.Stop();
@@ -62,7 +66,6 @@ namespace PomodoroVic
         private void btnDetener_Click(object sender, System.EventArgs e)
         {
             lblTiempo.Text = "00:00";
-            label1.Text = lblTiempo.Text;//Temporal
             timerControlTiempo.Stop();
         }
 
@@ -71,7 +74,6 @@ namespace PomodoroVic
             valor = trbOpacidad.Value;
             valor = 1 - (valor / 10);
             this.Opacity = valor;
-            //MessageBox.Show(trbOpacidad.Value + "|" + this.Opacity.ToString());
         }
 
         private void chkAlwaysOnTop_CheckedChanged(object sender, System.EventArgs e)
@@ -114,6 +116,64 @@ namespace PomodoroVic
         private void ntfPomodoro_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             this.ntfPomodoro.Text = lblTiempo.Text;
+        }
+
+        private void Form1_DoubleClick(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void lblTiempo_Click(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void lblTiempo_DoubleClick(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void Form1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            ProcesarVentana(sender, e);
+        }
+
+        private void lblTiempo_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            ProcesarVentana(sender, e);
+        }
+
+        private void lblOpacidad_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            ProcesarVentana(sender, e);
+        }
+
+        private void ProcesarVentana(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+            if (e.Button == MouseButtons.Left && e.Clicks == 2)
+            {
+                RedimensionarVentana();
+            }
+        }
+
+        private void RedimensionarVentana()
+        {
+            if (this.Width >= 328)
+            {
+                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                this.ClientSize = new System.Drawing.Size(176, 60);
+
+            }
+            else
+            {
+                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                this.ClientSize = new System.Drawing.Size(320, 122);
+            }
         }
     }
 }
