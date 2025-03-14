@@ -16,14 +16,27 @@ namespace PomodoroVic
         {
             InitializeComponent();
         }
+        private void Form1_Load(object sender, System.EventArgs e)
+        {
+            lblTiempo.Text = "00:00";
+            label1.Text = lblTiempo.Text;//Temporal
+        }
+
         private void btn25Minutos_Click(object sender, System.EventArgs e)
         {
-            //dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 50);//Tiempo para pruebas en desarrollo
-            dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 0);////dtmTiempoAuxiliar = DateTime.Now; //Para pruebas en desarrollo
+            dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 0);//24 min, 55 segundos, coloco para pruebas en desarrollo
             dtmTiempoActualizado = new DateTime(1901, 1, 1, 1, 0, 0);
-            //dtmTiempoAuxiliar = dtmTiempoAuxiliar.AddMinutes(4);//Temporal para pruebas en desarrollo
-            //dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(1);//1 min para desarrollo
             dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(25);
+            lblTiempo.Text = dtmTiempoActualizado.ToString("mm:ss");
+
+            timerControlTiempo.Start();
+        }
+
+        private void btn5Minutos_Click(object sender, System.EventArgs e)
+        {
+            dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 0);//4, 55 segundos, coloco para pruebas en desarrollo
+            dtmTiempoActualizado = new DateTime(1901, 1, 1, 1, 0, 0);
+            dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(5);
             lblTiempo.Text = dtmTiempoActualizado.ToString("mm:ss");
 
             timerControlTiempo.Start();
@@ -37,15 +50,16 @@ namespace PomodoroVic
             if (dtmTiempoActualizado <= dtmTiempoAuxiliar)
             {
                 timerControlTiempo.Stop();
-                MessageBox.Show("Fin del tiempo", "Fin Pomodoro!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                MessageBox.Show("Fin del tiempo", "Fin Pomodoro!!!", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
             //Application.DoEvents();
         }
 
-        private void Form1_Load(object sender, System.EventArgs e)
+        private void btnDetener_Click(object sender, System.EventArgs e)
         {
             lblTiempo.Text = "00:00";
             label1.Text = lblTiempo.Text;//Temporal
+            timerControlTiempo.Stop();
         }
     }
 }
