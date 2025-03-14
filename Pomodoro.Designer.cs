@@ -43,6 +43,9 @@ namespace PomodoroVic
             this.chkAlwaysOnTop = new System.Windows.Forms.CheckBox();
             this.ntfPomodoro = new System.Windows.Forms.NotifyIcon(this.components);
             this.lblOpacidad = new System.Windows.Forms.Label();
+            this.ctmMenu = new System.Windows.Forms.ContextMenu();
+            this.menuItemRestaurar = new System.Windows.Forms.MenuItem();
+            this.menuItemSalir = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.timerControlTiempo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbOpacidad)).BeginInit();
             this.SuspendLayout();
@@ -135,6 +138,24 @@ namespace PomodoroVic
             this.lblOpacidad.Text = "Transparente:";
             this.lblOpacidad.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblOpacidad_MouseDown);
             // 
+            // ctmMenu
+            // 
+            this.ctmMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+                                                                                    this.menuItemRestaurar,
+                                                                                    this.menuItemSalir});
+            // 
+            // menuItemRestaurar
+            // 
+            this.menuItemRestaurar.Index = 0;
+            this.menuItemRestaurar.Text = "&Restaurar";
+            this.menuItemRestaurar.Click += new System.EventHandler(this.menuItem1_Click);
+            // 
+            // menuItemSalir
+            // 
+            this.menuItemSalir.Index = 1;
+            this.menuItemSalir.Text = "&Salir";
+            this.menuItemSalir.Click += new System.EventHandler(this.menuItemSalir_Click);
+            // 
             // Pomodoro
             //
             this.AcceptButton = this.btn25Minutos;
@@ -152,7 +173,7 @@ namespace PomodoroVic
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Pomodoro v1.4";
+            this.Text = "Pomodoro v1.5";
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -175,6 +196,9 @@ namespace PomodoroVic
         private System.Windows.Forms.CheckBox chkAlwaysOnTop;
         private System.Windows.Forms.NotifyIcon ntfPomodoro;
         private System.Windows.Forms.Label lblOpacidad;
+        private System.Windows.Forms.ContextMenu ctmMenu;
+        private System.Windows.Forms.MenuItem menuItemRestaurar;
+        private System.Windows.Forms.MenuItem menuItemSalir;
     }
 }
 

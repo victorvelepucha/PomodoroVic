@@ -159,6 +159,23 @@ namespace PomodoroVic
             {
                 RedimensionarVentana();
             }
+            if (e.Button == MouseButtons.Right)
+            {
+                /*ContextMenu m = new ContextMenu();
+				m.MenuItems.Add(new MenuItem("Cut"));
+				m.MenuItems.Add(new MenuItem("Copy"));
+				m.MenuItems.Add(new MenuItem("Paste"));*/
+
+                /*int currentMouseOverRow = dataGridView1.HitTest(e.X,e.Y).RowIndex;
+
+				if (currentMouseOverRow >= 0)
+				{
+					m.MenuItems.Add(new MenuItem(string.Format("Do something to row {0}", currentMouseOverRow.ToString())));
+				}
+*/
+                ctmMenu.Show(lblTiempo, new Point(e.X, e.Y));
+
+            }
         }
 
         private void RedimensionarVentana()
@@ -166,14 +183,31 @@ namespace PomodoroVic
             if (this.Width >= 328)
             {
                 this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                this.ShowInTaskbar = false;
                 this.ClientSize = new System.Drawing.Size(176, 60);
 
             }
             else
             {
                 this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                this.ShowInTaskbar = true;
                 this.ClientSize = new System.Drawing.Size(320, 122);
             }
         }
+
+        private void menuItem1_Click(object sender, System.EventArgs e)
+        {
+            RedimensionarVentana();
+        }
+
+        private void menuItemSalir_Click(object sender, System.EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Seguro desea salir?", "Confirmación", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
     }
 }

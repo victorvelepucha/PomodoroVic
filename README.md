@@ -1,4 +1,9 @@
 # PomodoroVic Desktop Application
+
+## Pomodoro application V1.5
+- Cuando este minimalista, no mostrar en TaskBar. Menu contextual en label Tiempo, para restaurar/salir.
+
+---
 ## Pomodoro application V1.4
 - Se incorpora resize, doble click minimalista, drag window, ventana centrada.
 
