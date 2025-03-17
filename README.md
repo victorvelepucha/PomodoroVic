@@ -1,4 +1,47 @@
 # PomodoroVic Desktop Application
+## Instrucciones:
+- Se inicia y se coloca por defecto en modo minimalista en la pantalla en la parte inferior derecha, cerca de la hora del sistema.
+	- Se puede mover la ventana a cualquier lugar de la pantalla arrastrando la ventana.
+- Al dar doble clic, se inicia por default en Pomodoro de 25 minutos:
+	- los minutos configurados pueden cambiar al seleccionar la opción de menú o por el archivo de configuración.
+- Al dar nuevamente doble clic inicia por en Pomodoro de 5 minutos o los minutos configurados.
+- Por default la opacidad esta configurada al 75% de transparencia, pero se puede cambiar:
+	- por archivo de configuración 
+	- o por opciones de menú.
+- Habilitada la funcion AlwaysOnTop, y Parpadeo a 1 minuto de finalizar por defecto pero configurable.
+- Si el pomodoro esta a 1 minuto de finalizar se alterna:
+	- el contador de tiempo en color azul osculo y marron para pomodoro 25.
+	- y celeste y marron para pomodoro 5.
+	- Se reproduce sonido cada 10 segundos, si esta habilitado la reproducción de sonido.
+- Al finalizar el tiempo, aparecerá una ventana de alerta indicando el pomodoro finalizado. 
+	- Esta ventana desaparece automáticamente.
+- Se puede pausar el contador de tiempo con la barra espaciadora.
+
+
+Requerimientos SW:
+- Podría funcionar en cualquier versión de Windows con Framework 4.8 como:
+	- Windows 7 con SP1, Windows 8.1, Windows 10, Windows 11.
+	- Windows Server 2008 R2 con SP1, 2012, 2012 R2, 2016, 2019, 2022.
+
+Requerimientos HW:
+- Procesador Intel Core i5, i7, AMD Ryzen con frecuencia mínima de 2 GHz o superior.
+- 8 GB de RAM para sistemas operativos de 64 bits.
+- 53KB ocupa en disco el programa.
+
+Licencia: 
+- Este programa se distribuye bajo la licencia MIT que quiere decir:
+	- Se permite que cualquiera use, copie, modifique y distribuya este código incluso para usos comerciales.
+	- La única condición es que incluyan la licencia original y den crédito al autor.
+
+Funcionalidad futura:
+- Que se generen graficos estadísticos guardando información de LOGs grabados en BDD SQL Compact o algun otro motor de BDD
+
+---
+
+## Pomodoro application V2.4
+- Se añade funcionalidad de pausa de tiempo con barra espaciadora, y posibilidad de activar/desactivar sonidos.
+
+---
 ## Pomodoro application V2.3
 - Se incorpora ambos pomodoros: 5/25 y 17/52 para tener ambas funcionalidades para su uso.
 

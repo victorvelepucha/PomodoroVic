@@ -20,11 +20,9 @@ namespace PomodoroVic
         private int POMODORO_EN_EJECUCION = 25;
         private string pathLog;
         private string variable;
-
+        private bool isPaused = false;
         private System.DateTime dtmTiempoAuxiliar;
         private System.DateTime dtmTiempoActualizado;
-        public string Variable { get => Variable1; set => Variable1 = value; }
-        public string Variable1 { get => variable; set => variable = value; }
 
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
@@ -47,6 +45,7 @@ namespace PomodoroVic
             this.menuItemAutoSwitch.Checked = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["AutoSwitch"]);
             this.menuItemBlink.Checked = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Blink"]); ;
             this.menuItemActivarLog.Checked = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["LogEnabled"]); ;
+            this.menuItemPlaySound.Checked = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["PlaySound"]); ;
             int iniciarConTiempoPomodoro = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IniciarConPomodoro"]);
             if (iniciarConTiempoPomodoro == POMODORO_25)
             {
@@ -108,12 +107,18 @@ namespace PomodoroVic
             menuItem17Minutos.Checked = true;
             ProcesarPomodoro(POMODORO_17);
         }
+        private void TestNUnit()
+        {
+            //1 min, 10 segundos, coloco para pruebas en desarrollo
+            dtmTiempoActualizado = new DateTime(1901, 1, 1, 1, 1, 10);
+        }
         private void ProcesarPomodoro(int pomodoroAEjecutar)
         {
             POMODORO_EN_EJECUCION = pomodoroAEjecutar;
-            dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 0);//(1901, 1, 1, 1, 24, 50) 24 min, 50 segundos, coloco para pruebas en desarrollo
+            dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 0);
             dtmTiempoActualizado = new DateTime(1901, 1, 1, 1, 0, 0);
-            dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(pomodoroAEjecutar);//colocar 1 para pruebas internas/unitarias
+            dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(pomodoroAEjecutar);
+            TestNUnit();
             if (POMODORO_EN_EJECUCION == POMODORO_5 || POMODORO_EN_EJECUCION == POMODORO_17)
             {
                 lblTiempo.ForeColor = System.Drawing.Color.SteelBlue;
@@ -139,6 +144,17 @@ namespace PomodoroVic
             lblTiempo.Text = dtmTiempoActualizado.ToString("mm:ss");
             if (dtmTiempoActualizado.Minute < 1 && menuItemBlink.Checked)
             {
+                if (menuItemPlaySound.Checked && dtmTiempoActualizado.Second % 10 == 0)// (playSoundOnlyOnce)
+                {
+                    //Se identifica que la mayoria de windows tienen este archivo por default, por lo que se decide utilizar este archivo wav.
+                    string audioFile = @"c:\Windows\Media\ding.wav";
+                    //Valida existencia de archivo antes de abrirlo y ejecutar (play).
+                    if (File.Exists(audioFile))
+                    {
+                        SoundPlayer simpleSound = new SoundPlayer(audioFile);
+                        simpleSound.Play();
+                    }
+                }
                 if (POMODORO_EN_EJECUCION == POMODORO_5 || POMODORO_EN_EJECUCION == POMODORO_17)
                 {
                     if (lblTiempo.ForeColor == System.Drawing.Color.SteelBlue)
@@ -177,15 +193,17 @@ namespace PomodoroVic
                 }
                 notifierInfo1.Info = "Fin del Pomodoro " + POMODORO_EN_EJECUCION;
                 notifierInfo1.ShowInfo();
-                //Se identifica que la mayoria de windows tienen este archivo por default, por lo que se decide utilizar este archivo wav.
-                string audioFile = @"c:\Windows\Media\chimes.wav";
-                //Valida existencia de archivo antes de abrirlo y ejecutar (play).
-                if (File.Exists(audioFile))
+                if (menuItemPlaySound.Checked)
                 {
-                    SoundPlayer simpleSound = new SoundPlayer(audioFile);
-                    simpleSound.Play();
+                    //Se identifica que la mayoria de windows tienen este archivo por default, por lo que se decide utilizar este archivo wav.
+                    string audioFile = @"c:\Windows\Media\chimes.wav";
+                    //Valida existencia de archivo antes de abrirlo y ejecutar (play).
+                    if (File.Exists(audioFile))
+                    {
+                        SoundPlayer simpleSound = new SoundPlayer(audioFile);
+                        simpleSound.Play();
+                    }
                 }
-
                 if (menuItemAutoSwitch.Checked)
                 {
                     //Ejecuta el metodo contrario
@@ -206,7 +224,6 @@ namespace PomodoroVic
                         menuItem52Minutos_Click(null, null);
                     }
                 }
-
             }
             Application.DoEvents();
         }
@@ -271,14 +288,7 @@ namespace PomodoroVic
         }
         private void menuItemBlink_Click(object sender, System.EventArgs e)
         {
-            if (menuItemBlink.Checked)
-            {
-                menuItemBlink.Checked = false;
-            }
-            else
-            {
-                menuItemBlink.Checked = true;
-            }
+            menuItemBlink.Checked = !menuItemBlink.Checked;
         }
 
         private void menuItemAlwaysOnTop_Click(object sender, System.EventArgs e)
@@ -297,19 +307,12 @@ namespace PomodoroVic
 
         private void menuItemActivarLog_Click(object sender, System.EventArgs e)
         {
-            if (menuItemActivarLog.Checked)
-            {
-                menuItemActivarLog.Checked = false;
-            }
-            else
-            {
-                menuItemActivarLog.Checked = true;
-            }
+            menuItemActivarLog.Checked = !menuItemActivarLog.Checked;
         }
 
         private void menuItemSalir_Click(object sender, System.EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Seguro desea salir?", "Confirmaci�n", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+            DialogResult result = MessageBox.Show("Seguro desea salir?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
             if (result == DialogResult.Yes)
             {
                 Application.Exit();
@@ -330,25 +333,16 @@ namespace PomodoroVic
                     escribirArchivo.WriteLine("Pomodoro " + POMODORO_EN_EJECUCION + " cancelado: " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
             }
-
         }
-
+        private void menuItemPlaySound_Click(object sender, EventArgs e)
+        {
+            menuItemPlaySound.Checked = !menuItemPlaySound.Checked;
+        }
         private void menuItemMinimizar_Click(object sender, System.EventArgs e)
         {
             ntfPomodoro.Visible = true;
             this.ntfPomodoro.Text = "Doble clic para maximizar...";
             this.Hide();
-        }
-        private void ntfPomodoro_DoubleClick(object sender, System.EventArgs e)
-        {
-            this.Show();
-            ntfPomodoro.Visible = false;
-            this.WindowState = FormWindowState.Normal;
-        }
-
-        private void ntfPomodoro_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            this.ntfPomodoro.Text = lblTiempo.Text;
         }
 
         private void menuItemTransp0_Click(object sender, System.EventArgs e)
@@ -389,15 +383,27 @@ namespace PomodoroVic
 
         private void menuItemAcercaDe_Click(object sender, System.EventArgs e)
         {
-            MessageBox.Show("Pomodoro Timer" +
-                Environment.NewLine + "Aplicación gratuita v2.3." +
+            MessageBox.Show("PomodoroVic Timer" +
+                Environment.NewLine + "Aplicación gratuita v2.4" +
                 Environment.NewLine + "Autor: Victor Velepucha" +
                 Environment.NewLine + "Copyright ©  2025" +
                 Environment.NewLine +
+                Environment.NewLine + "Barra espaciadora para pausar/continuar." +
                 Environment.NewLine + "Doble clic para alternar entre pomodoros." +
                 Environment.NewLine + "Tiempo en color celeste para Pomodoro Trabajo" +
                 Environment.NewLine + "Tiempo en color azul para Pomodoro descanso",
                 "PomodoroVic!!!");
+        }
+        private void ntfPomodoro_DoubleClick(object sender, System.EventArgs e)
+        {
+            this.Show();
+            ntfPomodoro.Visible = false;
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void ntfPomodoro_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            this.ntfPomodoro.Text = lblTiempo.Text;
         }
 
         private void PlaceLowerRight()
@@ -411,6 +417,23 @@ namespace PomodoroVic
 
             this.Left = rightmost.WorkingArea.Right - this.Width;
             this.Top = rightmost.WorkingArea.Bottom - this.Height;
+        }
+
+        private void Pomodoro_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Space)
+            {
+                if (isPaused)
+                {
+                    isPaused = false;
+                    timerControlTiempo.Start();
+                }
+                else
+                {
+                    isPaused = true;
+                    timerControlTiempo.Stop();
+                }
+            }
         }
     }
 }

@@ -33,7 +33,7 @@ namespace PomodoroVic
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(Pomodoro));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Pomodoro));
             this.lblTiempo = new System.Windows.Forms.Label();
             this.timerControlTiempo = new System.Timers.Timer();
             this.ntfPomodoro = new System.Windows.Forms.NotifyIcon(this.components);
@@ -56,6 +56,7 @@ namespace PomodoroVic
             this.menuItemTransp50 = new System.Windows.Forms.MenuItem();
             this.menuItemTransp75 = new System.Windows.Forms.MenuItem();
             this.menuItemActivarLog = new System.Windows.Forms.MenuItem();
+            this.menuItemPlaySound = new System.Windows.Forms.MenuItem();
             this.menuItemMinimizar = new System.Windows.Forms.MenuItem();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuItemAcercaDe = new System.Windows.Forms.MenuItem();
@@ -67,11 +68,11 @@ namespace PomodoroVic
             // 
             // lblTiempo
             // 
-            this.lblTiempo.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+            this.lblTiempo.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTiempo.ForeColor = System.Drawing.Color.SteelBlue;
             this.lblTiempo.Location = new System.Drawing.Point(0, 0);
             this.lblTiempo.Name = "lblTiempo";
-            this.lblTiempo.Size = new System.Drawing.Size(140, 44);
+            this.lblTiempo.Size = new System.Drawing.Size(216, 64);
             this.lblTiempo.TabIndex = 0;
             this.lblTiempo.Text = "00:00";
             this.lblTiempo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -79,7 +80,7 @@ namespace PomodoroVic
             // 
             // timerControlTiempo
             // 
-            this.timerControlTiempo.Interval = 1000;
+            this.timerControlTiempo.Interval = 1000D;
             this.timerControlTiempo.SynchronizingObject = this;
             this.timerControlTiempo.Elapsed += new System.Timers.ElapsedEventHandler(this.timerControlTiempo_Elapsed);
             // 
@@ -87,24 +88,24 @@ namespace PomodoroVic
             // 
             this.ntfPomodoro.Icon = ((System.Drawing.Icon)(resources.GetObject("ntfPomodoro.Icon")));
             this.ntfPomodoro.Text = "notifyIcon1";
-            this.ntfPomodoro.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ntfPomodoro_MouseMove);
             this.ntfPomodoro.DoubleClick += new System.EventHandler(this.ntfPomodoro_DoubleClick);
+            this.ntfPomodoro.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ntfPomodoro_MouseMove);
             // 
             // ctmMenu
             // 
             this.ctmMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-                                                                                    this.menuItem25Minutos,
-                                                                                    this.menuItem5Minutos,
-                                                                                    this.menuItem2,
-                                                                                    this.menuItem52Minutos,
-                                                                                    this.menuItem17Minutos,
-                                                                                    this.menuItem3,
-                                                                                    this.menuItemDetener,
-                                                                                    this.menuItem4,
-                                                                                    this.menuItemConfiguracion,
-                                                                                    this.menuItem1,
-                                                                                    this.menuItemAcercaDe,
-                                                                                    this.menuItemSalir});
+            this.menuItem25Minutos,
+            this.menuItem5Minutos,
+            this.menuItem2,
+            this.menuItem52Minutos,
+            this.menuItem17Minutos,
+            this.menuItem3,
+            this.menuItemDetener,
+            this.menuItem4,
+            this.menuItemConfiguracion,
+            this.menuItem1,
+            this.menuItemAcercaDe,
+            this.menuItemSalir});
             // 
             // menuItem25Minutos
             // 
@@ -155,12 +156,13 @@ namespace PomodoroVic
             // 
             this.menuItemConfiguracion.Index = 8;
             this.menuItemConfiguracion.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-                                                                                                  this.menuItemAlwaysOnTop,
-                                                                                                  this.menuItemAutoSwitch,
-                                                                                                  this.menuItemBlink,
-                                                                                                  this.menuItemTransparencia,
-                                                                                                  this.menuItemActivarLog,
-                                                                                                  this.menuItemMinimizar});
+            this.menuItemAlwaysOnTop,
+            this.menuItemAutoSwitch,
+            this.menuItemBlink,
+            this.menuItemTransparencia,
+            this.menuItemActivarLog,
+            this.menuItemPlaySound,
+            this.menuItemMinimizar});
             this.menuItemConfiguracion.Text = "Configuración";
             // 
             // menuItemAlwaysOnTop
@@ -187,10 +189,10 @@ namespace PomodoroVic
             // 
             this.menuItemTransparencia.Index = 3;
             this.menuItemTransparencia.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-                                                                                                  this.menuItemTransp0,
-                                                                                                  this.menuItemTransp25,
-                                                                                                  this.menuItemTransp50,
-                                                                                                  this.menuItemTransp75});
+            this.menuItemTransp0,
+            this.menuItemTransp25,
+            this.menuItemTransp50,
+            this.menuItemTransp75});
             this.menuItemTransparencia.Text = "Transparencia";
             // 
             // menuItemTransp0
@@ -225,9 +227,16 @@ namespace PomodoroVic
             this.menuItemActivarLog.Text = "Activar Log";
             this.menuItemActivarLog.Click += new System.EventHandler(this.menuItemActivarLog_Click);
             // 
+            // menuItemPlaySound
+            // 
+            this.menuItemPlaySound.Checked = true;
+            this.menuItemPlaySound.Index = 5;
+            this.menuItemPlaySound.Text = "Play Sound";
+            this.menuItemPlaySound.Click += new System.EventHandler(this.menuItemPlaySound_Click);
+            // 
             // menuItemMinimizar
             // 
-            this.menuItemMinimizar.Index = 5;
+            this.menuItemMinimizar.Index = 6;
             this.menuItemMinimizar.Text = "Minimizar a SystemTray";
             this.menuItemMinimizar.Click += new System.EventHandler(this.menuItemMinimizar_Click);
             // 
@@ -250,11 +259,11 @@ namespace PomodoroVic
             // 
             // lblFecha
             // 
-            this.lblFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+            this.lblFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFecha.ForeColor = System.Drawing.Color.Black;
-            this.lblFecha.Location = new System.Drawing.Point(0, 38);
+            this.lblFecha.Location = new System.Drawing.Point(0, 56);
             this.lblFecha.Name = "lblFecha";
-            this.lblFecha.Size = new System.Drawing.Size(138, 10);
+            this.lblFecha.Size = new System.Drawing.Size(221, 14);
             this.lblFecha.TabIndex = 1;
             this.lblFecha.Text = ".";
             this.lblFecha.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -262,7 +271,6 @@ namespace PomodoroVic
             // 
             // notifierInfo1
             // 
-            this.notifierInfo1.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.notifierInfo1.BackColor = System.Drawing.SystemColors.Info;
             this.notifierInfo1.ClientSize = new System.Drawing.Size(160, 40);
             this.notifierInfo1.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -280,8 +288,8 @@ namespace PomodoroVic
             // 
             // Pomodoro
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(140, 48);
+            this.AutoScaleBaseSize = new System.Drawing.Size(8, 19);
+            this.ClientSize = new System.Drawing.Size(216, 105);
             this.Controls.Add(this.lblFecha);
             this.Controls.Add(this.lblTiempo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -289,12 +297,13 @@ namespace PomodoroVic
             this.MaximizeBox = false;
             this.Name = "Pomodoro";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pomodoro";
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.Load += new System.EventHandler(this.Pomodoro_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Pomodoro_KeyPress);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.timerControlTiempo)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -328,6 +337,7 @@ namespace PomodoroVic
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem menuItem3;
         private System.Windows.Forms.MenuItem menuItemBlink;
+        private System.Windows.Forms.MenuItem menuItemPlaySound;
     }
 }
 
