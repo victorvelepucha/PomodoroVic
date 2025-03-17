@@ -1,5 +1,17 @@
 # PomodoroVic Desktop Application
 
+## Pomodoro application V1.8
+- Cambio mayor para añadir funcionalidades como blink, tooltip, context menu.
+- Se reorganiza opciones de menu mostradas al hacer clic derecho.
+- Se crea opción AutoSwitch para que cuando termine un pomodoro automáticamente comience otro (ej, si termina el pomodoro 25 comienza uno nuevo en 5).
+- Se crea opción Blink (seleccionado por default) para que alterne en colores si esta a 1 minuto o menos por finalizar el pomodoro.
+- Se añade ventana tipo tooltip la cual se presenta en forma de alerta no intrusiva cuando tiempo a finalizado.
+- Se elimina Mensaje (MessageBox) de fin de pomodoro con cierre automático.
+- Se elimina botones de tiempo, para tener solo vía botón derecho. 
+- Se elimina función mostrar título. 
+- Se elimina funcionalidad de resize, ahora al hacer doble clic se alterna entre tiempo 25 y tiempo 5.
+
+---
 ## Pomodoro application V1.7
 - Cambio en dialogo que presenta cuando termina 1 pomodoro (de fin de tiempo), para presentar 2 botones, continuar o cancelar. 
 - Dialogo se cierra luego de 10 segundos. 

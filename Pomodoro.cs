@@ -10,6 +10,9 @@ using System.Windows.Forms;
 
 namespace PomodoroVic
 {
+    /// <summary>
+	/// Pomodoro. Autor: Victor Velepucha
+	/// </summary>
     public partial class Pomodoro : Form
     {
         private const int WM_NCLBUTTONDOWN = 0xA1;
@@ -17,18 +20,8 @@ namespace PomodoroVic
         private const int POMODORO_TRABAJO = 0x019;
         private const int POMODORO_DESCANSO = 0x005;
         private bool banderaBoton25;
-        private int cuentaAntesCierre;
-        private System.Timers.Timer myTimer;
-        private string tituloMensaje = "Fin Pomodoro!!!";
         private System.DateTime dtmTiempoAuxiliar;
         private System.DateTime dtmTiempoActualizado;
-        //private const UInt32 WM_CLOSE = 0x0082;//0x0010;
-        private const UInt32 WM_DESTROY = 0x0082;
-        private const string WM_MSGBOXE = "#32770";
-
-        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
 
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
@@ -40,32 +33,38 @@ namespace PomodoroVic
         {
             InitializeComponent();
         }
-        private void Form1_Load(object sender, System.EventArgs e)
+        private void Pomodoro_Load(object sender, System.EventArgs e)
         {
-            lblTiempo.Text = "00:00";
-            this.Opacity = 1 - 0.5;
+            this.Opacity = 1 - 0.75;
             this.TopMost = true;
             banderaBoton25 = false;
+            this.ntfPomodoro.Icon = this.Icon;
+            lblFecha.Visible = false;
+            ntfPomodoro.ContextMenu = this.ctmMenu;
+            notifierInfo1.Interval = 75;
+            notifierInfo1.TimeOut = 3;
             PlaceLowerRight();
         }
 
-        private void btn25Minutos_Click(object sender, System.EventArgs e)
+        private void menuItem25Minutos_Click(object sender, System.EventArgs e)
         {
-            dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 0);//24 min, 55 segundos, coloco para pruebas en desarrollo
+            dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 0);//24 min, 50 segundos, coloco para pruebas en desarrollo
             dtmTiempoActualizado = new DateTime(1901, 1, 1, 1, 0, 0);
-            dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(POMODORO_TRABAJO);//(POMODORO_TRABAJO);
-            lblTiempo.Text = dtmTiempoActualizado.ToString("mm:ss");
+            dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(POMODORO_TRABAJO);//(POMODORO_TRABAJO o 1);
+            lblTiempo.ForeColor = System.Drawing.Color.SteelBlue;
+            lblFecha.Visible = false;
             banderaBoton25 = true;
 
             timerControlTiempo.Start();
         }
 
-        private void btn5Minutos_Click(object sender, System.EventArgs e)
+        private void menuItem5Minutos_Click(object sender, System.EventArgs e)
         {
             dtmTiempoAuxiliar = new DateTime(1901, 1, 1, 1, 0, 0);//4,55 segundos, coloco para pruebas en desarrollo
             dtmTiempoActualizado = new DateTime(1901, 1, 1, 1, 0, 0);
-            dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(POMODORO_DESCANSO);//(POMODORO_DESCANSO);
-            lblTiempo.Text = dtmTiempoActualizado.ToString("mm:ss");
+            dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(POMODORO_DESCANSO);//(POMODORO_DESCANSO o 1);
+            lblTiempo.ForeColor = System.Drawing.Color.Navy;
+            lblFecha.Visible = false;
             banderaBoton25 = false;
 
             timerControlTiempo.Start();
@@ -75,67 +74,54 @@ namespace PomodoroVic
         {
             dtmTiempoActualizado = dtmTiempoActualizado.Subtract(new TimeSpan(0, 0, 0, 1));
             lblTiempo.Text = dtmTiempoActualizado.ToString("mm:ss");
-            if (dtmTiempoActualizado.Minute < 1)
+            if (dtmTiempoActualizado.Minute < 1 && menuItemBlink.Checked)
             {
-                //ctmMenu.
-                ntfPomodoro.Visible = true;
-                ntfPomodoro.Text = "Menos de 1 minuto para finalizar";
-                ntfPomodoro.ContextMenu = this.ctmMenu;
-
-                if (lblTiempo.ForeColor == System.Drawing.Color.SteelBlue)
+                if (banderaBoton25)
                 {
-                    lblTiempo.ForeColor = System.Drawing.Color.Navy;
+                    if (lblTiempo.ForeColor == System.Drawing.Color.SteelBlue)
+                    {
+                        lblTiempo.ForeColor = System.Drawing.Color.Maroon;
+                    }
+                    else
+                    {
+                        lblTiempo.ForeColor = System.Drawing.Color.SteelBlue;
+                    }
                 }
                 else
                 {
-                    lblTiempo.ForeColor = System.Drawing.Color.SteelBlue;
+                    if (lblTiempo.ForeColor == System.Drawing.Color.Navy)
+                    {
+                        lblTiempo.ForeColor = System.Drawing.Color.Maroon;
+                    }
+                    else
+                    {
+                        lblTiempo.ForeColor = System.Drawing.Color.Navy;
+                    }
                 }
             }
             if (dtmTiempoActualizado <= dtmTiempoAuxiliar)
             {
                 timerControlTiempo.Stop();
                 int tiempo = (banderaBoton25 == true) ? POMODORO_TRABAJO : POMODORO_DESCANSO;
-                int tiempo2 = (tiempo == POMODORO_DESCANSO) ? POMODORO_TRABAJO : POMODORO_DESCANSO;
-                //MessageBox.Show("Fin del tiempo "+tiempo,tituloMensaje,MessageBoxButtons.OK,MessageBoxIcon.Information,MessageBoxDefaultButton.Button1,MessageBoxOptions.DefaultDesktopOnly);
-                ShowAutoClosingMessageBox("Fin del tiempo " + tiempo + Environment.NewLine + "Desea continuar con un nuevo ciclo " + tiempo2.ToString(), tituloMensaje, tiempo2);
+                lblTiempo.ForeColor = System.Drawing.Color.Maroon;
+                lblFecha.Text = "Finalizado a las " + DateTime.Now.ToString("hh:mm:ss");
+                lblFecha.Visible = true;
+                notifierInfo1.Info = "Fin del Pomodoro " + tiempo;
+                notifierInfo1.ShowInfo();
+                if (menuItemAutoSwitch.Checked)
+                {
+                    if (banderaBoton25)
+                    {
+                        menuItem5Minutos_Click(null, null);
+                    }
+                    else
+                    {
+                        menuItem25Minutos_Click(null, null);
+                    }
+                }
+
             }
             Application.DoEvents();
-        }
-
-        private void ShowAutoClosingMessageBox(string message, string caption, int tiempo2)
-        {
-            myTimer = new System.Timers.Timer(1000);
-            myTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.myTimer_Elapsed);
-            myTimer.Enabled = true;
-            DialogResult resultado = MessageBox.Show(message, tituloMensaje, MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-            if (resultado == DialogResult.Yes)
-            {
-                if (tiempo2 == POMODORO_TRABAJO)
-                {
-                    btn25Minutos_Click(null, null);
-                    btn25Minutos.Focus();
-                }
-                else
-                {
-                    btn5Minutos_Click(null, null);
-                    btn5Minutos.Focus();
-                }
-            }
-            myTimer.Enabled = false;
-            cuentaAntesCierre = 0;
-        }
-        private void myTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (cuentaAntesCierre >= 10)//10 segundos antes del cierre autom�tico
-            {
-                IntPtr hWnd = FindWindow(WM_MSGBOXE, tituloMensaje);
-                if (hWnd != IntPtr.Zero) SendMessage(hWnd, WM_DESTROY, IntPtr.Zero, IntPtr.Zero);
-                System.Console.WriteLine("Prueba " + DateTime.Now.ToString());
-                myTimer.Enabled = false;
-                myTimer.Dispose();
-                cuentaAntesCierre = 0;
-            }
-            cuentaAntesCierre += 1;
         }
 
         private void Form1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -144,6 +130,10 @@ namespace PomodoroVic
         }
 
         private void lblTiempo_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            ProcesarVentana(sender, e);
+        }
+        private void lblFecha_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             ProcesarVentana(sender, e);
         }
@@ -157,7 +147,7 @@ namespace PomodoroVic
             }
             if (e.Button == MouseButtons.Left && e.Clicks == 2)
             {
-                RedimensionarVentana();
+                ProcesarPomodoro();
             }
             if (e.Button == MouseButtons.Right)
             {
@@ -165,26 +155,45 @@ namespace PomodoroVic
             }
         }
 
-        private void RedimensionarVentana()
+        private void ProcesarPomodoro()
         {
-            if (this.Width >= 176)
+            lblFecha.Text = DateTime.Now.ToString("hh:mm:ss");
+            if (banderaBoton25)
             {
-                this.ClientSize = new System.Drawing.Size(144, 50);
+                menuItem5Minutos_Click(null, null);
             }
             else
             {
-                this.ClientSize = new System.Drawing.Size(176, 60);
+                menuItem25Minutos_Click(null, null);
             }
         }
 
-        private void menuItem1_Click(object sender, System.EventArgs e)
+        private void menuItemAutoSwitch_Click(object sender, System.EventArgs e)
         {
-            RedimensionarVentana();
+            if (menuItemAutoSwitch.Checked)
+            {
+                menuItemAutoSwitch.Checked = false;
+            }
+            else
+            {
+                menuItemAutoSwitch.Checked = true;
+            }
+        }
+        private void menuItemBlink_Click(object sender, System.EventArgs e)
+        {
+            if (menuItemBlink.Checked)
+            {
+                menuItemBlink.Checked = false;
+            }
+            else
+            {
+                menuItemBlink.Checked = true;
+            }
         }
 
         private void menuItemSalir_Click(object sender, System.EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Seguro desea salir?", "Confirmación", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Seguro desea salir?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
             if (result == DialogResult.Yes)
             {
                 Application.Exit();
@@ -209,6 +218,7 @@ namespace PomodoroVic
         {
             lblTiempo.Text = "00:00";
             timerControlTiempo.Stop();
+            lblFecha.Visible = false;
             banderaBoton25 = false;
         }
 
@@ -268,26 +278,14 @@ namespace PomodoroVic
 
         private void menuItemAcercaDe_Click(object sender, System.EventArgs e)
         {
-            MessageBox.Show("Aplicativo Pomodoro 25/5" +
+            MessageBox.Show("Pomodoro 25/5" +
+                Environment.NewLine + "Herramienta gratuita." +
+                Environment.NewLine + "Autor: Victor Velepucha" +
                 Environment.NewLine +
-                "Autor: Victor Velepucha" +
-                Environment.NewLine +
-                "Uso gratuito",
-                "PomodoroVic");
-        }
-
-        private void menuItemMostrarOcultarTitulo_Click(object sender, System.EventArgs e)
-        {
-            if (menuItemMostrarOcultarTitulo.Checked)
-            {
-                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-                menuItemMostrarOcultarTitulo.Checked = false;
-            }
-            else
-            {
-                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
-                menuItemMostrarOcultarTitulo.Checked = true;
-            }
+                Environment.NewLine + "Doble clic para alternar entre pomodoros." +
+                Environment.NewLine + "Tiempo en color celeste para Pomodoro 25 min." +
+                Environment.NewLine + "Tiempo en color azul para Pomodoro 05 min.",
+                "PomodoroVic!!!");
         }
 
         private void PlaceLowerRight()

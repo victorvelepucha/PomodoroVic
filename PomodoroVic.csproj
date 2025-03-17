@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Notificador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Notificador.Designer.cs">
+      <DependentUpon>Notificador.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pomodoro.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +60,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Notificador.resx">
+      <DependentUpon>Notificador.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Pomodoro.resx">
       <DependentUpon>Pomodoro.cs</DependentUpon>
     </EmbeddedResource>
