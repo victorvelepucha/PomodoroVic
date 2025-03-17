@@ -1,5 +1,8 @@
 # PomodoroVic Desktop Application
+## Pomodoro application V1.9
+- Se añade en label de hora fin, el pomodoro finalizado, con formato P: 5 o P:25
 
+---
 ## Pomodoro application V1.8
 - Cambio mayor para añadir funcionalidades como blink, tooltip, context menu.
 - Se reorganiza opciones de menu mostradas al hacer clic derecho.

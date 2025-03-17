@@ -241,17 +241,14 @@ namespace PomodoroVic
             // 
             // Pomodoro
             //
-            //this.AcceptButton = this.btn25Minutos;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(176, 60);
-            //this.Controls.Add(this.btn5Minutos);
-            //this.Controls.Add(this.btn25Minutos);
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(140, 48);
+            this.Controls.Add(this.lblFecha);
             this.Controls.Add(this.lblTiempo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "Pomodoro";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pomodoro";
@@ -259,8 +256,6 @@ namespace PomodoroVic
             this.Load += new System.EventHandler(this.Pomodoro_Load);
             ((System.ComponentModel.ISupportInitialize)(this.timerControlTiempo)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
-
         }
 
         #endregion

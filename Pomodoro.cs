@@ -104,7 +104,7 @@ namespace PomodoroVic
                 timerControlTiempo.Stop();
                 int tiempo = (banderaBoton25 == true) ? POMODORO_TRABAJO : POMODORO_DESCANSO;
                 lblTiempo.ForeColor = System.Drawing.Color.Maroon;
-                lblFecha.Text = "Finalizado a las " + DateTime.Now.ToString("hh:mm:ss");
+                lblFecha.Text = "P:" + tiempo + " finalizado a las " + DateTime.Now.ToString("hh:mm:ss");
                 lblFecha.Visible = true;
                 notifierInfo1.Info = "Fin del Pomodoro " + tiempo;
                 notifierInfo1.ShowInfo();
