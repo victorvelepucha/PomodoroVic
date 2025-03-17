@@ -17,8 +17,8 @@ namespace PomodoroVic
     {
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private IntPtr HT_CAPTION = (IntPtr)0x2;
-        private const int POMODORO_TRABAJO = 0x019;
-        private const int POMODORO_DESCANSO = 0x005;
+        private int POMODORO_TRABAJO = 0x019;//25 min
+        private int POMODORO_DESCANSO = 0x005;
         private bool banderaBoton25;
         private System.DateTime dtmTiempoAuxiliar;
         private System.DateTime dtmTiempoActualizado;
@@ -35,8 +35,19 @@ namespace PomodoroVic
         }
         private void Pomodoro_Load(object sender, System.EventArgs e)
         {
-            this.Opacity = 1 - 0.75;
-            this.TopMost = true;
+            //Configuracion inicial
+            this.Opacity = 1 - Convert.ToDouble(System.Configuration.ConfigurationSettings.AppSettings["opacidad"]);
+            this.TopMost = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["TopMost"]);
+            this.menuItemAutoSwitch.Checked = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["AutoSwitch"]);
+            this.menuItemBlink.Checked = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["Blink"]); ;
+            this.POMODORO_TRABAJO = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["PomodoroTrabajo"]);
+            this.POMODORO_DESCANSO = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["PomodoroDescaso"]);
+            this.menuItem25Minutos.Text = POMODORO_TRABAJO + " minutos";
+            this.menuItem5Minutos.Text = POMODORO_DESCANSO + " minutos";
+            this.menuItemAutoSwitch.Text = "AutoSwitch " + POMODORO_TRABAJO + "/" + POMODORO_DESCANSO;
+
+
+
             banderaBoton25 = false;
             this.ntfPomodoro.Icon = this.Icon;
             lblFecha.Visible = false;
@@ -278,13 +289,13 @@ namespace PomodoroVic
 
         private void menuItemAcercaDe_Click(object sender, System.EventArgs e)
         {
-            MessageBox.Show("Pomodoro 25/5" +
+            MessageBox.Show("Pomodoro Timer" +
                 Environment.NewLine + "Herramienta gratuita." +
                 Environment.NewLine + "Autor: Victor Velepucha" +
                 Environment.NewLine +
                 Environment.NewLine + "Doble clic para alternar entre pomodoros." +
-                Environment.NewLine + "Tiempo en color celeste para Pomodoro 25 min." +
-                Environment.NewLine + "Tiempo en color azul para Pomodoro 05 min.",
+                Environment.NewLine + "Tiempo en color celeste para Pomodoro " + POMODORO_TRABAJO + " min." +
+                Environment.NewLine + "Tiempo en color azul para Pomodoro " + POMODORO_DESCANSO + " min.",
                 "PomodoroVic!!!");
         }
 

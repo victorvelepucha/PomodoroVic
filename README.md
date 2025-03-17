@@ -1,4 +1,8 @@
 # PomodoroVic Desktop Application
+## Pomodoro application V2.0
+- Se añade appconfig para poder personalizar variables como tiempo, opacidad, etc.
+
+---
 ## Pomodoro application V1.9
 - Se añade en label de hora fin, el pomodoro finalizado, con formato P: 5 o P:25
 
