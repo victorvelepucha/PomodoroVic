@@ -265,7 +265,19 @@ namespace PomodoroVic
         {
             lblTiempo.Text = "00:00";
             timerControlTiempo.Stop();
-            lblFecha.Visible = false;
+            int tiempo = (banderaBoton25 == true) ? POMODORO_TRABAJO : POMODORO_DESCANSO;
+            lblTiempo.ForeColor = System.Drawing.Color.Maroon;
+            lblFecha.Text = "P:" + tiempo + " cancelado a las " + DateTime.Now.ToString("hh:mm:ss");
+            lblFecha.Visible = true;
+            if (menuItemActivarLog.Checked)
+            {
+                using (StreamWriter escribirArchivo = new StreamWriter(pathLog, true))
+                {
+                    escribirArchivo.WriteLine("Pomodoro " + tiempo + " cancelado: " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+            }
+
+            //lblFecha.Visible=false;
             banderaBoton25 = false;
         }
 
@@ -328,7 +340,6 @@ namespace PomodoroVic
             MessageBox.Show("Pomodoro Timer" +
                 Environment.NewLine + "Herramienta gratuita." +
                 Environment.NewLine + "Autor: Victor Velepucha" +
-                Environment.NewLine + "A�o: 2017" +
                 Environment.NewLine +
                 Environment.NewLine + "Doble clic para alternar entre pomodoros." +
                 Environment.NewLine + "Tiempo en color celeste para Pomodoro " + POMODORO_TRABAJO + " min." +

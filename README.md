@@ -1,4 +1,8 @@
 # PomodoroVic Desktop Application
+## Pomodoro application V2.2
+- Se corrige bug que presenta la ventana de notificación en 1ra pantalla cuando la ventana de la hora esta en la 2da pantalla (extendida).
+
+---
 ## Pomodoro application V2.1
 - Se añade log de historial de uso de pomodoro. 
 - Este archivo de texto se genera en la misma ruta del ejecutable. 

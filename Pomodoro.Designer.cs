@@ -51,13 +51,13 @@ namespace PomodoroVic
             this.menuItemTransp25 = new System.Windows.Forms.MenuItem();
             this.menuItemTransp50 = new System.Windows.Forms.MenuItem();
             this.menuItemTransp75 = new System.Windows.Forms.MenuItem();
+            this.menuItemActivarLog = new System.Windows.Forms.MenuItem();
             this.menuItemMinimizar = new System.Windows.Forms.MenuItem();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuItemAcercaDe = new System.Windows.Forms.MenuItem();
             this.menuItemSalir = new System.Windows.Forms.MenuItem();
             this.lblFecha = new System.Windows.Forms.Label();
             this.notifierInfo1 = new PomodoroVic.Notificador();
-            this.menuItemActivarLog = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.timerControlTiempo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -91,6 +91,7 @@ namespace PomodoroVic
             this.ctmMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
                                                                                     this.menuItem25Minutos,
                                                                                     this.menuItem5Minutos,
+                                                                                    this.menuItemDetener,
                                                                                     this.menuItem4,
                                                                                     this.menuItemConfiguracion,
                                                                                     this.menuItem1,
@@ -101,6 +102,7 @@ namespace PomodoroVic
             // 
             this.menuItem25Minutos.Index = 0;
             this.menuItem25Minutos.Text = "25 minutos";
+            this.menuItem25Minutos.Click += new System.EventHandler(this.menuItem25Minutos_Click);
             // 
             // menuItem5Minutos
             // 
@@ -110,51 +112,50 @@ namespace PomodoroVic
             // 
             // menuItem4
             // 
-            this.menuItem4.Index = 2;
+            this.menuItem4.Index = 3;
             this.menuItem4.Text = "-";
             // 
             // menuItemConfiguracion
             // 
-            this.menuItemConfiguracion.Index = 3;
+            this.menuItemConfiguracion.Index = 4;
             this.menuItemConfiguracion.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-                                                                                                  this.menuItemDetener,
                                                                                                   this.menuItemAlwaysOnTop,
                                                                                                   this.menuItemAutoSwitch,
                                                                                                   this.menuItemBlink,
                                                                                                   this.menuItemTransparencia,
                                                                                                   this.menuItemActivarLog,
                                                                                                   this.menuItemMinimizar});
-            this.menuItemConfiguracion.Text = "Configuración";
+            this.menuItemConfiguracion.Text = "Configuraci�n";
             // 
             // menuItemDetener
             // 
-            this.menuItemDetener.Index = 0;
-            this.menuItemDetener.Text = "Reset";
+            this.menuItemDetener.Index = 2;
+            this.menuItemDetener.Text = "Cancelar";
             this.menuItemDetener.Click += new System.EventHandler(this.menuItemDetener_Click);
             // 
             // menuItemAlwaysOnTop
             // 
             this.menuItemAlwaysOnTop.Checked = true;
-            this.menuItemAlwaysOnTop.Index = 1;
+            this.menuItemAlwaysOnTop.Index = 0;
             this.menuItemAlwaysOnTop.Text = "AlwaysOnTop";
             this.menuItemAlwaysOnTop.Click += new System.EventHandler(this.menuItemAlwaysOnTop_Click);
             // 
             // menuItemAutoSwitch
             // 
-            this.menuItemAutoSwitch.Index = 2;
+            this.menuItemAutoSwitch.Index = 1;
             this.menuItemAutoSwitch.Text = "AutoSwitch 25/5";
             this.menuItemAutoSwitch.Click += new System.EventHandler(this.menuItemAutoSwitch_Click);
             // 
             // menuItemBlink
             // 
             this.menuItemBlink.Checked = true;
-            this.menuItemBlink.Index = 3;
+            this.menuItemBlink.Index = 2;
             this.menuItemBlink.Text = "Blink antes de finalizar";
             this.menuItemBlink.Click += new System.EventHandler(this.menuItemBlink_Click);
             // 
             // menuItemTransparencia
             // 
-            this.menuItemTransparencia.Index = 4;
+            this.menuItemTransparencia.Index = 3;
             this.menuItemTransparencia.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
                                                                                                   this.menuItemTransp0,
                                                                                                   this.menuItemTransp25,
@@ -187,26 +188,33 @@ namespace PomodoroVic
             this.menuItemTransp75.Text = "75%";
             this.menuItemTransp75.Click += new System.EventHandler(this.menuItemTransp75_Click);
             // 
+            // menuItemActivarLog
+            // 
+            this.menuItemActivarLog.Checked = true;
+            this.menuItemActivarLog.Index = 4;
+            this.menuItemActivarLog.Text = "Activar Log";
+            this.menuItemActivarLog.Click += new System.EventHandler(this.menuItemActivarLog_Click);
+            // 
             // menuItemMinimizar
             // 
-            this.menuItemMinimizar.Index = 6;
+            this.menuItemMinimizar.Index = 5;
             this.menuItemMinimizar.Text = "Minimizar a SystemTray";
             this.menuItemMinimizar.Click += new System.EventHandler(this.menuItemMinimizar_Click);
             // 
             // menuItem1
             // 
-            this.menuItem1.Index = 4;
+            this.menuItem1.Index = 5;
             this.menuItem1.Text = "-";
             // 
             // menuItemAcercaDe
             // 
-            this.menuItemAcercaDe.Index = 5;
+            this.menuItemAcercaDe.Index = 6;
             this.menuItemAcercaDe.Text = "Acerca de ...";
             this.menuItemAcercaDe.Click += new System.EventHandler(this.menuItemAcercaDe_Click);
             // 
             // menuItemSalir
             // 
-            this.menuItemSalir.Index = 6;
+            this.menuItemSalir.Index = 7;
             this.menuItemSalir.Text = "&Salir";
             this.menuItemSalir.Click += new System.EventHandler(this.menuItemSalir_Click);
             // 
@@ -240,17 +248,10 @@ namespace PomodoroVic
             this.notifierInfo1.TopMost = true;
             this.notifierInfo1.Visible = false;
             // 
-            // menuItemActivarLog
-            // 
-            this.menuItemActivarLog.Checked = true;
-            this.menuItemActivarLog.Index = 5;
-            this.menuItemActivarLog.Text = "Activar Log";
-            this.menuItemActivarLog.Click += new System.EventHandler(this.menuItemActivarLog_Click);
-            // 
             // Pomodoro
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(140, 29);
+            this.ClientSize = new System.Drawing.Size(140, 48);
             this.Controls.Add(this.lblFecha);
             this.Controls.Add(this.lblTiempo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

@@ -67,10 +67,18 @@ namespace PomodoroVic
 
         private void tmrMove_Tick(object sender, System.EventArgs e)
         {
+            Screen rightmost = Screen.AllScreens[0];
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                if (screen.WorkingArea.Right > rightmost.WorkingArea.Right)
+                    rightmost = screen;
+            }
+
             if (!bHide) // Show the Info Box
             {
                 this.Show();
-                if (this.Top > Screen.PrimaryScreen.Bounds.Bottom - (this.Height + 30)) //scrren limit - 30 for the TaskBar
+                //if ( this.Top > Screen.PrimaryScreen.Bounds.Bottom - (this.Height + 30)) //scrren limit - 30 for the TaskBar
+                if (this.Top > rightmost.WorkingArea.Bottom - (this.Height + 30)) //scrren limit - 30 for the TaskBar
                 {
                     this.Top -= nPitch;
                     bFinished = false;
@@ -84,7 +92,7 @@ namespace PomodoroVic
             }
             else if (!bFinished) // Hide It
             {
-                if (this.Top < Screen.PrimaryScreen.Bounds.Bottom)
+                if (this.Top < rightmost.WorkingArea.Bottom)//if ( this.Top < Screen.PrimaryScreen.Bounds.Bottom )
                 {
                     this.Top += nPitch;
                     bFinished = false;
@@ -116,9 +124,20 @@ namespace PomodoroVic
         }
         public void ShowInfo() // method to show the info in the GmailNotifierControl
         {
-            if (!bHide) //the GmailNotifierControl is about to be shown we initialize its location
-                this.Location = new Point(Screen.PrimaryScreen.Bounds.Right - this.Size.Width - 50,
-                    Screen.PrimaryScreen.Bounds.Bottom);
+            if (!bHide) //the NotifierControl is about to be shown we initialize its location
+            {
+                //this.Location = new Point(Screen.PrimaryScreen.Bounds.Right - this.Size.Width - 50, Screen.PrimaryScreen.Bounds.Bottom);
+                Screen rightmost = Screen.AllScreens[0];
+                foreach (Screen screen in Screen.AllScreens)
+                {
+                    if (screen.WorkingArea.Right > rightmost.WorkingArea.Right)
+                        rightmost = screen;
+                }
+
+                this.Left = rightmost.WorkingArea.Right - this.Width - 50;
+                this.Top = rightmost.WorkingArea.Bottom;
+                //this.Top = rightmost.WorkingArea.Bottom - this.Height;
+            }
             lblInfo.Text = strInfo;
             //pctLogo.Image = imgList.Images[1];
             this.Show();
