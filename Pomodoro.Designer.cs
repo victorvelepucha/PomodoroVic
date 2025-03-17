@@ -40,9 +40,13 @@ namespace PomodoroVic
             this.ctmMenu = new System.Windows.Forms.ContextMenu();
             this.menuItem25Minutos = new System.Windows.Forms.MenuItem();
             this.menuItem5Minutos = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.menuItem52Minutos = new System.Windows.Forms.MenuItem();
+            this.menuItem17Minutos = new System.Windows.Forms.MenuItem();
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.menuItemDetener = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
             this.menuItemConfiguracion = new System.Windows.Forms.MenuItem();
-            this.menuItemDetener = new System.Windows.Forms.MenuItem();
             this.menuItemAlwaysOnTop = new System.Windows.Forms.MenuItem();
             this.menuItemAutoSwitch = new System.Windows.Forms.MenuItem();
             this.menuItemBlink = new System.Windows.Forms.MenuItem();
@@ -91,6 +95,10 @@ namespace PomodoroVic
             this.ctmMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
                                                                                     this.menuItem25Minutos,
                                                                                     this.menuItem5Minutos,
+                                                                                    this.menuItem2,
+                                                                                    this.menuItem52Minutos,
+                                                                                    this.menuItem17Minutos,
+                                                                                    this.menuItem3,
                                                                                     this.menuItemDetener,
                                                                                     this.menuItem4,
                                                                                     this.menuItemConfiguracion,
@@ -110,14 +118,42 @@ namespace PomodoroVic
             this.menuItem5Minutos.Text = "5 minutos";
             this.menuItem5Minutos.Click += new System.EventHandler(this.menuItem5Minutos_Click);
             // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 2;
+            this.menuItem2.Text = "-";
+            // 
+            // menuItem52Minutos
+            // 
+            this.menuItem52Minutos.Index = 3;
+            this.menuItem52Minutos.Text = "52 minutos";
+            this.menuItem52Minutos.Click += new System.EventHandler(this.menuItem52Minutos_Click);
+            // 
+            // menuItem17Minutos
+            // 
+            this.menuItem17Minutos.Index = 4;
+            this.menuItem17Minutos.Text = "17 minutos";
+            this.menuItem17Minutos.Click += new System.EventHandler(this.menuItem17Minutos_Click);
+            // 
+            // menuItem3
+            // 
+            this.menuItem3.Index = 5;
+            this.menuItem3.Text = "-";
+            // 
+            // menuItemDetener
+            // 
+            this.menuItemDetener.Index = 6;
+            this.menuItemDetener.Text = "Cancelar";
+            this.menuItemDetener.Click += new System.EventHandler(this.menuItemDetener_Click);
+            // 
             // menuItem4
             // 
-            this.menuItem4.Index = 3;
+            this.menuItem4.Index = 7;
             this.menuItem4.Text = "-";
             // 
             // menuItemConfiguracion
             // 
-            this.menuItemConfiguracion.Index = 4;
+            this.menuItemConfiguracion.Index = 8;
             this.menuItemConfiguracion.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
                                                                                                   this.menuItemAlwaysOnTop,
                                                                                                   this.menuItemAutoSwitch,
@@ -125,13 +161,7 @@ namespace PomodoroVic
                                                                                                   this.menuItemTransparencia,
                                                                                                   this.menuItemActivarLog,
                                                                                                   this.menuItemMinimizar});
-            this.menuItemConfiguracion.Text = "Configuraci�n";
-            // 
-            // menuItemDetener
-            // 
-            this.menuItemDetener.Index = 2;
-            this.menuItemDetener.Text = "Cancelar";
-            this.menuItemDetener.Click += new System.EventHandler(this.menuItemDetener_Click);
+            this.menuItemConfiguracion.Text = "Configuración";
             // 
             // menuItemAlwaysOnTop
             // 
@@ -143,7 +173,7 @@ namespace PomodoroVic
             // menuItemAutoSwitch
             // 
             this.menuItemAutoSwitch.Index = 1;
-            this.menuItemAutoSwitch.Text = "AutoSwitch 25/5";
+            this.menuItemAutoSwitch.Text = "AutoSwitch trabajo/descanso";
             this.menuItemAutoSwitch.Click += new System.EventHandler(this.menuItemAutoSwitch_Click);
             // 
             // menuItemBlink
@@ -203,18 +233,18 @@ namespace PomodoroVic
             // 
             // menuItem1
             // 
-            this.menuItem1.Index = 5;
+            this.menuItem1.Index = 9;
             this.menuItem1.Text = "-";
             // 
             // menuItemAcercaDe
             // 
-            this.menuItemAcercaDe.Index = 6;
+            this.menuItemAcercaDe.Index = 10;
             this.menuItemAcercaDe.Text = "Acerca de ...";
             this.menuItemAcercaDe.Click += new System.EventHandler(this.menuItemAcercaDe_Click);
             // 
             // menuItemSalir
             // 
-            this.menuItemSalir.Index = 7;
+            this.menuItemSalir.Index = 11;
             this.menuItemSalir.Text = "&Salir";
             this.menuItemSalir.Click += new System.EventHandler(this.menuItemSalir_Click);
             // 
@@ -293,6 +323,10 @@ namespace PomodoroVic
         private System.Windows.Forms.MenuItem menuItemConfiguracion;
         private System.Windows.Forms.MenuItem menuItemTransparencia;
         private System.Windows.Forms.MenuItem menuItemActivarLog;
+        private System.Windows.Forms.MenuItem menuItem17Minutos;
+        private System.Windows.Forms.MenuItem menuItem52Minutos;
+        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem menuItem3;
         private System.Windows.Forms.MenuItem menuItemBlink;
     }
 }

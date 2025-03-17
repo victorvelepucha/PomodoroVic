@@ -1,4 +1,8 @@
 # PomodoroVic Desktop Application
+## Pomodoro application V2.3
+- Se incorpora ambos pomodoros: 5/25 y 17/52 para tener ambas funcionalidades para su uso.
+
+---
 ## Pomodoro application V2.2
 - Se corrige bug que presenta la ventana de notificación en 1ra pantalla cuando la ventana de la hora esta en la 2da pantalla (extendida).
 
