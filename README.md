@@ -1,4 +1,10 @@
 # PomodoroVic Desktop Application
+## Pomodoro application V2.1
+- Se añade log de historial de uso de pomodoro. 
+- Este archivo de texto se genera en la misma ruta del ejecutable. 
+- Esta opción puede desactivarse con menu al hacer clic derecho, o desde archivo de configuración.
+
+---
 ## Pomodoro application V2.0
 - Se añade appconfig para poder personalizar variables como tiempo, opacidad, etc.
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace PomodoroVic
         private int POMODORO_TRABAJO = 0x019;//25 min
         private int POMODORO_DESCANSO = 0x005;
         private bool banderaBoton25;
+        private string pathLog;
+
         private System.DateTime dtmTiempoAuxiliar;
         private System.DateTime dtmTiempoActualizado;
 
@@ -35,18 +38,19 @@ namespace PomodoroVic
         }
         private void Pomodoro_Load(object sender, System.EventArgs e)
         {
+            pathLog = System.Environment.CurrentDirectory + "\\" + Application.ProductName + ".log";
             //Configuracion inicial
             this.Opacity = 1 - Convert.ToDouble(System.Configuration.ConfigurationSettings.AppSettings["opacidad"]);
             this.TopMost = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["TopMost"]);
+            menuItemAlwaysOnTop.Checked = this.TopMost;
             this.menuItemAutoSwitch.Checked = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["AutoSwitch"]);
             this.menuItemBlink.Checked = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["Blink"]); ;
+            this.menuItemActivarLog.Checked = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["LogEnabled"]); ;
             this.POMODORO_TRABAJO = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["PomodoroTrabajo"]);
             this.POMODORO_DESCANSO = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["PomodoroDescaso"]);
             this.menuItem25Minutos.Text = POMODORO_TRABAJO + " minutos";
             this.menuItem5Minutos.Text = POMODORO_DESCANSO + " minutos";
             this.menuItemAutoSwitch.Text = "AutoSwitch " + POMODORO_TRABAJO + "/" + POMODORO_DESCANSO;
-
-
 
             banderaBoton25 = false;
             this.ntfPomodoro.Icon = this.Icon;
@@ -63,9 +67,16 @@ namespace PomodoroVic
             dtmTiempoActualizado = new DateTime(1901, 1, 1, 1, 0, 0);
             dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(POMODORO_TRABAJO);//(POMODORO_TRABAJO o 1);
             lblTiempo.ForeColor = System.Drawing.Color.SteelBlue;
-            lblFecha.Visible = false;
+            lblFecha.Text = DateTime.Now.ToString("hh:mm:ss");
+            //lblFecha.Visible=false;
             banderaBoton25 = true;
-
+            if (menuItemActivarLog.Checked)
+            {
+                using (StreamWriter escribirArchivo = new StreamWriter(pathLog, true))
+                {
+                    escribirArchivo.WriteLine("Pomodoro " + POMODORO_TRABAJO + " iniciado: " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+            }
             timerControlTiempo.Start();
         }
 
@@ -75,9 +86,16 @@ namespace PomodoroVic
             dtmTiempoActualizado = new DateTime(1901, 1, 1, 1, 0, 0);
             dtmTiempoActualizado = dtmTiempoActualizado.AddMinutes(POMODORO_DESCANSO);//(POMODORO_DESCANSO o 1);
             lblTiempo.ForeColor = System.Drawing.Color.Navy;
-            lblFecha.Visible = false;
+            lblFecha.Text = DateTime.Now.ToString("hh:mm:ss");
+            //lblFecha.Visible=false;
             banderaBoton25 = false;
-
+            if (menuItemActivarLog.Checked)
+            {
+                using (StreamWriter escribirArchivo = new StreamWriter(pathLog, true))
+                {
+                    escribirArchivo.WriteLine("Pomodoro " + POMODORO_DESCANSO + " iniciado: " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+            }
             timerControlTiempo.Start();
         }
 
@@ -117,6 +135,13 @@ namespace PomodoroVic
                 lblTiempo.ForeColor = System.Drawing.Color.Maroon;
                 lblFecha.Text = "P:" + tiempo + " finalizado a las " + DateTime.Now.ToString("hh:mm:ss");
                 lblFecha.Visible = true;
+                if (menuItemActivarLog.Checked)
+                {
+                    using (StreamWriter escribirArchivo = new StreamWriter(pathLog, true))
+                    {
+                        escribirArchivo.WriteLine("Pomodoro " + tiempo + " finalizado: " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                    }
+                }
                 notifierInfo1.Info = "Fin del Pomodoro " + tiempo;
                 notifierInfo1.ShowInfo();
                 if (menuItemAutoSwitch.Checked)
@@ -168,7 +193,6 @@ namespace PomodoroVic
 
         private void ProcesarPomodoro()
         {
-            lblFecha.Text = DateTime.Now.ToString("hh:mm:ss");
             if (banderaBoton25)
             {
                 menuItem5Minutos_Click(null, null);
@@ -202,15 +226,6 @@ namespace PomodoroVic
             }
         }
 
-        private void menuItemSalir_Click(object sender, System.EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("Seguro desea salir?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-            if (result == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-        }
-
         private void menuItemAlwaysOnTop_Click(object sender, System.EventArgs e)
         {
             if (menuItemAlwaysOnTop.Checked)
@@ -222,6 +237,27 @@ namespace PomodoroVic
             {
                 this.TopMost = true;
                 menuItemAlwaysOnTop.Checked = true;
+            }
+        }
+
+        private void menuItemActivarLog_Click(object sender, System.EventArgs e)
+        {
+            if (menuItemActivarLog.Checked)
+            {
+                menuItemActivarLog.Checked = false;
+            }
+            else
+            {
+                menuItemActivarLog.Checked = true;
+            }
+        }
+
+        private void menuItemSalir_Click(object sender, System.EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Seguro desea salir?", "Confirmaci�n", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
             }
         }
 
@@ -292,6 +328,7 @@ namespace PomodoroVic
             MessageBox.Show("Pomodoro Timer" +
                 Environment.NewLine + "Herramienta gratuita." +
                 Environment.NewLine + "Autor: Victor Velepucha" +
+                Environment.NewLine + "A�o: 2017" +
                 Environment.NewLine +
                 Environment.NewLine + "Doble clic para alternar entre pomodoros." +
                 Environment.NewLine + "Tiempo en color celeste para Pomodoro " + POMODORO_TRABAJO + " min." +

@@ -57,6 +57,7 @@ namespace PomodoroVic
             this.menuItemSalir = new System.Windows.Forms.MenuItem();
             this.lblFecha = new System.Windows.Forms.Label();
             this.notifierInfo1 = new PomodoroVic.Notificador();
+            this.menuItemActivarLog = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.timerControlTiempo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -100,7 +101,6 @@ namespace PomodoroVic
             // 
             this.menuItem25Minutos.Index = 0;
             this.menuItem25Minutos.Text = "25 minutos";
-            this.menuItem25Minutos.Click += new System.EventHandler(this.menuItem25Minutos_Click);
             // 
             // menuItem5Minutos
             // 
@@ -122,8 +122,9 @@ namespace PomodoroVic
                                                                                                   this.menuItemAutoSwitch,
                                                                                                   this.menuItemBlink,
                                                                                                   this.menuItemTransparencia,
+                                                                                                  this.menuItemActivarLog,
                                                                                                   this.menuItemMinimizar});
-            this.menuItemConfiguracion.Text = "Configuraci�n";
+            this.menuItemConfiguracion.Text = "Configuración";
             // 
             // menuItemDetener
             // 
@@ -188,7 +189,7 @@ namespace PomodoroVic
             // 
             // menuItemMinimizar
             // 
-            this.menuItemMinimizar.Index = 5;
+            this.menuItemMinimizar.Index = 6;
             this.menuItemMinimizar.Text = "Minimizar a SystemTray";
             this.menuItemMinimizar.Click += new System.EventHandler(this.menuItemMinimizar_Click);
             // 
@@ -239,10 +240,17 @@ namespace PomodoroVic
             this.notifierInfo1.TopMost = true;
             this.notifierInfo1.Visible = false;
             // 
+            // menuItemActivarLog
+            // 
+            this.menuItemActivarLog.Checked = true;
+            this.menuItemActivarLog.Index = 5;
+            this.menuItemActivarLog.Text = "Activar Log";
+            this.menuItemActivarLog.Click += new System.EventHandler(this.menuItemActivarLog_Click);
+            // 
             // Pomodoro
-            //
+            // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(140, 48);
+            this.ClientSize = new System.Drawing.Size(140, 29);
             this.Controls.Add(this.lblFecha);
             this.Controls.Add(this.lblTiempo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -283,6 +291,7 @@ namespace PomodoroVic
         private System.Windows.Forms.MenuItem menuItemAutoSwitch;
         private System.Windows.Forms.MenuItem menuItemConfiguracion;
         private System.Windows.Forms.MenuItem menuItemTransparencia;
+        private System.Windows.Forms.MenuItem menuItemActivarLog;
         private System.Windows.Forms.MenuItem menuItemBlink;
     }
 }
